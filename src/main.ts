@@ -1,19 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import cookieParser from 'cookie-parser';
-
 import { AppModule } from './app.module';
-import { ValidationError } from 'class-validator';
-import { ValidationPipe } from '@nestjs/common';
-import { parser } from 'typescript-eslint';
-import { ResponseInterceptor } from './interceptors/response.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(cookieParser())
-  app.useGlobalInterceptors(new ResponseInterceptor())
-  app.setGlobalPrefix(process.env.API as string)
-  app.useGlobalPipes(new ValidationPipe({ transform: true }))
   await app.listen(process.env.PORT ?? 3000);
-  console.warn(`server is running on ${process.env.PORT}`)
 }
 bootstrap();
